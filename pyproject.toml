@@ -1,5 +1,11 @@
 [tool.pdm]
 
+[tool.flake8]
+max-line-length = 120
+per-file-ignores = [
+    '__init__.py:F401',
+]
+
 [project]
 name = ""
 version = ""
@@ -7,6 +13,9 @@ description = ""
 authors = [
     {name = "Yuliya Bryukhovskikh", email = "makutu@ereb.ru"},
 ]
-dependencies = []
-requires-python = ">=3.11"
+dependencies = [
+    "uwsgi>=2.0.21",
+    "jinja2>=3.1.2",
+]
+requires-python = ">=3.10"
 license = {text = "MIT"}
