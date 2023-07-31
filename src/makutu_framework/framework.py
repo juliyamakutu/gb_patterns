@@ -1,4 +1,5 @@
 from typing import Any, Callable
+from urllib.parse import unquote
 
 from .utils import get_path_to_file
 from .views import PageNotFound404
@@ -33,6 +34,38 @@ class Framework:
         start_response("200 OK", [("Content-Type", content_type)])
         return [content]
 
+    @staticmethod
+    def _decode_value(value: str) -> str:
+        """Decodes value"""
+        return unquote(value).replace("+", " ")
+
+    def _parse_input_data(self, input_data: str) -> dict[str, str]:
+        """Slits input data to dict"""
+        result = {}
+        if input_data:
+            params = input_data.split("&")
+            for item in params:
+                k, v = item.split("=")
+                result[k] = self._decode_value(v)
+        return result
+
+    def _get_request_params(self, environ: dict[str, Any]) -> dict[str, str]:
+        """Get query string"""
+        query_string = environ["QUERY_STRING"]
+        return self._parse_input_data(query_string)
+
+    def _get_post_data(self, environ: dict[str, Any]) -> dict[str, str]:
+        """Get POST data"""
+        raw_content_length = environ.get("CONTENT_LENGTH")
+        content_length = int(raw_content_length) if raw_content_length else 0
+
+        data = environ["wsgi.input"].read(content_length) if content_length else None
+
+        if not data:
+            return {}
+
+        return self._parse_input_data(data.decode(encoding="utf-8"))
+
     def __call__(
         self, environ: dict[Any, Any], start_response: Callable
     ) -> list[bytes]:
@@ -50,6 +83,14 @@ class Framework:
             view = PageNotFound404()
 
         request = {}
+        method = environ["REQUEST_METHOD"]
+        request["method"] = method
+
+        if method == "POST":
+            request["data"] = self._get_post_data(environ)
+        if method == "GET":
+            request["request_params"] = self._get_request_params(environ)
+
         for front in self.fronts:
             front(request)
 
