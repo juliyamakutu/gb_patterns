@@ -14,8 +14,8 @@ authors = [
     {name = "Yuliya Bryukhovskikh", email = "makutu@ereb.ru"},
 ]
 dependencies = [
-    "uwsgi>=2.0.21",
+    "uwsgi>=2.0.22",
     "jinja2>=3.1.2",
 ]
-requires-python = ">=3.10"
+requires-python = "~=3.7"
 license = {text = "MIT"}
