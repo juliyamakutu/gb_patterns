@@ -10,4 +10,8 @@ class Index:
 
 class Contacts:
     def __call__(self, request):
+        if request["method"] == "POST":
+            print(request["data"])
+        if request["method"] == "GET":
+            print(request["request_params"])
         return "200 OK", render("contact.html")
