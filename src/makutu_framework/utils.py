@@ -9,3 +9,11 @@ def get_path_to_file(path: str) -> str:
         str: path to templates folder
     """
     return abspath(join(dirname(__file__), "../templates", path.lstrip("/")))
+
+
+def get_template_folder() -> str:
+    """
+    Returns:
+        str: path to templates folder
+    """
+    return abspath(join(dirname(__file__), "../templates"))

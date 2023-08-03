@@ -1,6 +1,7 @@
-from jinja2 import Template
+from jinja2 import FileSystemLoader
+from jinja2.environment import Environment
 
-from .utils import get_path_to_file
+from .utils import get_template_folder
 
 
 def render(template_name: str, **kwargs):
@@ -12,7 +13,8 @@ def render(template_name: str, **kwargs):
         str: rendered template
     """
 
-    with open(get_path_to_file(template_name), encoding="utf-8") as template_file:
-        template = Template(template_file.read())
+    env = Environment()
+    env.loader = FileSystemLoader(get_template_folder())
+    template = env.get_template(template_name)
 
     return template.render(**kwargs)
