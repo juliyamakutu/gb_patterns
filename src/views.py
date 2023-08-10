@@ -1,14 +1,16 @@
 from engine import Engine
-from makutu_framework import render
+from makutu_framework import Route, render
 
 engine = Engine()
 
 
+@Route("/")
 class Index:
     def __call__(self, request):
         return "200 OK", render("index.html")
 
 
+@Route("/contacts/")
 class Contacts:
     def __call__(self, request):
         if request["method"] == "POST":
@@ -18,6 +20,7 @@ class Contacts:
         return "200 OK", render("contact.html")
 
 
+@Route("/courses-list/")
 class CoursesList:
     def __call__(self, request):
         category = engine.get_category(request.get("request_params", {}).get("id"))
@@ -31,6 +34,7 @@ class CoursesList:
         return "200 OK", "No courses found"
 
 
+@Route("/create-course/")
 class CreateCourse:
     category_id = -1
 
@@ -71,6 +75,7 @@ class CreateCourse:
         return "200 OK", "No categories found"
 
 
+@Route("/create-category/")
 class CreateCategory:
     def __call__(self, request):
         if request["method"] == "POST":
@@ -95,11 +100,13 @@ class CreateCategory:
             return "200 OK", render("create_category.html", categories=categories)
 
 
+@Route("/category-list/")
 class CategoryList:
     def __call__(self, request):
         return "200 OK", render("category_list.html", objects_list=engine.categories)
 
 
+@Route("/copy-course/")
 class CopyCourse:
     def __call__(self, request):
         name = request.get("request_params", {}).get("name")
