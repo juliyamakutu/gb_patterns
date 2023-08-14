@@ -1,5 +1,6 @@
 class User:
-    pass
+    def __init__(self, name: str):
+        self.name = name
 
 
 class Teacher(User):
@@ -17,5 +18,5 @@ class UserFactory:
     }
 
     @classmethod
-    def create(cls, user_type: str):
-        return cls.types[user_type]()
+    def create(cls, user_type: str, name: str):
+        return cls.types[user_type](name)

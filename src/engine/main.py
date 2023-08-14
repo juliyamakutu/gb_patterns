@@ -15,10 +15,22 @@ class Engine:
         self.students = []
         self.courses = []
         self.categories = []
+        self._routes = {}
+
+    def route(self, url: str):
+        def wrapper(cls):
+            self._routes[url] = cls()
+            return cls
+
+        return wrapper
+
+    @property
+    def routes(self):
+        return self._routes
 
     @staticmethod
-    def create_user(user_type: str) -> User:
-        return UserFactory.create(user_type)
+    def create_user(user_type: str, name: str) -> User:
+        return UserFactory.create(user_type, name)
 
     @staticmethod
     def create_category(name: str, category: Optional[Category] = None) -> Category:
@@ -36,6 +48,12 @@ class Engine:
 
     def get_course(self, name: str) -> Optional[Course]:
         for item in self.courses:
+            if item.name == name:
+                return item
+        return None
+
+    def get_student(self, name: str) -> Optional[User]:
+        for item in self.students:
             if item.name == name:
                 return item
         return None

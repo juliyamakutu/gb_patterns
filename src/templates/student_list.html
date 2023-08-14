@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}
+	Список студентов
+{% endblock %}
+{% block menu %}
+	{% include "menu.html" %}
+{% endblock %}
+{% block body %}
+    <div>
+        <a href="/create-student/">Создать студента</a>
+        <br>
+        <h1>Список студентов"</h1>
+        {% for item in objects_list %}
+        <li>
+            {{item.name}}
+        </li>
+        {% endfor %}
+    </div>
+{% endblock %}

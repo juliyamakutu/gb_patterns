@@ -12,6 +12,10 @@ class Course(PrototypeMixin):
         self.name = name
         self.category = category
         self.category.courses.append(self)
+        self.students = []
+
+    def __getitem__(self, item):
+        return self.students[item]
 
 
 class OfflineCourse(Course):
@@ -39,6 +43,9 @@ class Category:
         self.name = name
         self.category = category
         self.courses = []
+
+    def __getitem__(self, item):
+        return self.courses[item]
 
     def course_count(self):
         result = len(self.courses)

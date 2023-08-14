@@ -1,13 +1,14 @@
 from wsgiref.simple_server import make_server
 
-from makutu_framework import Framework, Route
+from makutu_framework import Framework
 from urls import fronts
+from views import engine
 
 PORT = 8080
 
-print(Route.routes)
+print(engine.routes)
 
-app = Framework(Route.routes, fronts)
+app = Framework(engine.routes, fronts)
 
 with make_server("", PORT, app) as httpd:
     print(f"Launching on port {PORT}...")
