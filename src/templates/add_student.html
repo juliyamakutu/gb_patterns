@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}
+	Добавление студента на курс
+{% endblock %}
+{% block menu %}
+	{% include "menu.html" %}
+{% endblock %}
+{% block body %}
+    <div>
+        <a href="/student-list/">назад</a>
+    </div>
+
+    <br>
+    <br>
+
+    <div>
+        <h1>Добавление студента на курс"</h1>
+        <form method="post">
+            <input type="text" name="student" placeholder="Имя студента">
+            <input type="text" name="course" placeholder="Название курса">
+            <button type="submit">Сохранить и вернуться к списку студентов</button>
+        </form>
+    </div>
+{% endblock %}

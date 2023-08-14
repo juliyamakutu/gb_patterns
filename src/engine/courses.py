@@ -12,6 +12,7 @@ class Course(PrototypeMixin):
         self.name = name
         self.category = category
         self.category.courses.append(self)
+        self.students = []
 
 
 class OfflineCourse(Course):

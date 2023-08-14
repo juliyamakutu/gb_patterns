@@ -126,3 +126,45 @@ class CopyCourse:
                 )
 
         return "200 OK", "No courses have been added yet"
+
+
+@Route("/student-list/")
+class StudentList:
+    def __call__(self, request):
+        return "200 OK", render("student_list.html", objects_list=engine.students)
+
+
+@Route("/create-student/")
+class CreateStudent:
+    def __call__(self, request):
+        if request["method"] == "POST":
+            data = request["data"]
+
+            name = data["name"]
+            name = engine.decode_value(name)
+
+            student = engine.create_user("student", name)
+            engine.students.append(student)
+
+            return "200 OK", render("student_list.html", objects_list=engine.students)
+        else:
+            return "200 OK", render("create_student.html")
+
+
+@Route("/add-student/")
+class AddStudent:
+    def __call__(self, request):
+        if request["method"] == "POST":
+            data = request["data"]
+            course = data["course"]
+            student = data["student"]
+            course = engine.get_course(course)
+            student = engine.get_student(student)
+            course.students.append(student)
+            return "200 OK", render("student_list.html", objects_list=engine.students)
+        else:
+            courses = engine.courses
+            students = engine.students
+            return "200 OK", render(
+                "add_student.html", courses=courses, students=students
+            )
