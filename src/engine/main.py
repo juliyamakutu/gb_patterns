@@ -15,6 +15,18 @@ class Engine:
         self.students = []
         self.courses = []
         self.categories = []
+        self._routes = {}
+
+    def route(self, url: str):
+        def wrapper(cls):
+            self._routes[url] = cls()
+            return cls
+
+        return wrapper
+
+    @property
+    def routes(self):
+        return self._routes
 
     @staticmethod
     def create_user(user_type: str, name: str) -> User:

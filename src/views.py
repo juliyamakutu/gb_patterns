@@ -1,16 +1,16 @@
 from engine import Engine
-from makutu_framework import Route, render
+from makutu_framework import render
 
 engine = Engine()
 
 
-@Route("/")
+@engine.route("/")
 class Index:
     def __call__(self, request):
         return "200 OK", render("index.html")
 
 
-@Route("/contacts/")
+@engine.route("/contacts/")
 class Contacts:
     def __call__(self, request):
         if request["method"] == "POST":
@@ -20,7 +20,7 @@ class Contacts:
         return "200 OK", render("contact.html")
 
 
-@Route("/courses-list/")
+@engine.route("/courses-list/")
 class CoursesList:
     def __call__(self, request):
         category = engine.get_category(request.get("request_params", {}).get("id"))
@@ -34,7 +34,7 @@ class CoursesList:
         return "200 OK", "No courses found"
 
 
-@Route("/create-course/")
+@engine.route("/create-course/")
 class CreateCourse:
     category_id = -1
 
@@ -75,7 +75,7 @@ class CreateCourse:
         return "200 OK", "No categories found"
 
 
-@Route("/create-category/")
+@engine.route("/create-category/")
 class CreateCategory:
     def __call__(self, request):
         if request["method"] == "POST":
@@ -100,13 +100,13 @@ class CreateCategory:
             return "200 OK", render("create_category.html", categories=categories)
 
 
-@Route("/category-list/")
+@engine.route("/category-list/")
 class CategoryList:
     def __call__(self, request):
         return "200 OK", render("category_list.html", objects_list=engine.categories)
 
 
-@Route("/copy-course/")
+@engine.route("/copy-course/")
 class CopyCourse:
     def __call__(self, request):
         name = request.get("request_params", {}).get("name")
@@ -128,13 +128,13 @@ class CopyCourse:
         return "200 OK", "No courses have been added yet"
 
 
-@Route("/student-list/")
+@engine.route("/student-list/")
 class StudentList:
     def __call__(self, request):
         return "200 OK", render("student_list.html", objects_list=engine.students)
 
 
-@Route("/create-student/")
+@engine.route("/create-student/")
 class CreateStudent:
     def __call__(self, request):
         if request["method"] == "POST":
@@ -151,7 +151,7 @@ class CreateStudent:
             return "200 OK", render("create_student.html")
 
 
-@Route("/add-student/")
+@engine.route("/add-student/")
 class AddStudent:
     def __call__(self, request):
         if request["method"] == "POST":
