@@ -1,7 +1,9 @@
-from engine import Engine
+from engine import Engine, MapperRegistry, UnitOfWork
 from makutu_framework import render
 
 engine = Engine()
+UnitOfWork.new_current()
+UnitOfWork.get_current().set_mapper_registry(MapperRegistry)
 
 
 @engine.route("/")
@@ -131,7 +133,8 @@ class CopyCourse:
 @engine.route("/student-list/")
 class StudentList:
     def __call__(self, request):
-        return "200 OK", render("student_list.html", objects_list=engine.students)
+        mapper = MapperRegistry.get_current_mapper("student")
+        return "200 OK", render("student_list.html", objects_list=mapper.all())
 
 
 @engine.route("/create-student/")
@@ -145,6 +148,8 @@ class CreateStudent:
 
             student = engine.create_user("student", name)
             engine.students.append(student)
+            student.mark_new()
+            UnitOfWork.get_current().commit()
 
             return "200 OK", render("student_list.html", objects_list=engine.students)
         else:

@@ -1,7 +1,7 @@
 from typing import Optional
 
 from .courses import Category, Course, CourseFactory
-from .users import User, UserFactory
+from .unit_of_work import User, UserFactory
 
 
 class Engine:
